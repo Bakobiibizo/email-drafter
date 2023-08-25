@@ -1,21 +1,33 @@
-#Path: server.py
+# Path: server.py
 from flask import Flask
 from flask import request
-from langchain import ChatOpenAI
-from scripts.email_generator import email_endpoint
+from scripts.marketing_report import run_marketing_report
 
 app = Flask(__name__)
 
-@app.route('/server.py', methods=['POST'])
-def generate_email_endpoint():
-    # Get request data
+
+#@app.route("/email", methods=["POST"])
+#def generate_email_endpoint():
+#    # Get request data
+#    data = request.get_json()
+#
+#    # Call email generator script with data
+#    result = email_endpoint(data)
+#
+#    # Return result
+#    return result
+
+
+@app.route("/report", methods=["POST"])
+def marketing_report_generation():
     data = request.get_json()
+    target_url = data["target_url"]
 
-    # Call email generator script with data
-    result = email_endpoint()
+    run_marketing_report(company_path=target_url)
+    with open("docs/output.txt", "r", encoding="utf-8") as f:
+        output = f.read()
+    return output
 
-    # Return result
-    return result
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=True)
