@@ -6,6 +6,4 @@ def extract_domain_name(url):
     parsed_url = urlparse(url)
     # Split the netloc by dots
     domain_parts = parsed_url.netloc.split(".")
-    # Get the second last part (usually the main domain name)
-    domain_name = domain_parts[-2] if len(domain_parts) > 1 else domain_parts[0]
-    return domain_name
+    return domain_parts[-2] if len(domain_parts) > 1 else domain_parts[0]
